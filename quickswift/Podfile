@@ -1,0 +1,78 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '10.0'
+use_frameworks!
+inhibit_all_warnings!
+#Framework
+#install! 'cocoapods', :deterministic_uuids => false
+
+def commonPods
+  # Base
+    pod 'IQKeyboardManagerSwift'
+    pod 'Then'
+    pod 'Moya/ReactiveSwift', '~> 14.0'
+    pod 'ReactiveCocoa'
+    pod 'SAMKeychain'
+    pod 'SDWebImage'
+    pod 'SDWebImage/WebP'
+    
+    # Data
+    pod 'HandyJSON'
+    pod 'SwiftyJSON'
+    
+    pod 'CryptoSwift'
+    pod 'MMKV', '= 1.2.2'
+    
+    pod 'SSZipArchive', '~> 2.2.3'
+    
+    # UI
+    pod 'MarqueeLabel'
+    pod 'DZNEmptyDataSet'
+    pod 'IGListKit', '~> 4.0.0'
+    pod 'YTPageController'
+    # pod 'RTNavigationController', :path => 'LocalPod/RTNavigationController/'
+    
+    pod 'YYText'
+    pod 'YYImage/WebP'
+    pod 'YYImage'
+    pod 'MJRefresh'
+    
+    # Layout
+    pod 'SnapKit', '~> 5.0.0'
+    pod 'FlexLayout'
+    pod 'PinLayout'
+    
+    
+    # MediaKit
+    # pod 'RPCircularProgress'
+    # pod 'VICMAImageView', '~> 1.0'
+    # pod 'KTVHTTPCache', '~> 2.0.0'
+    
+    # pod 'GPUImage'
+end
+
+def common
+    commonPods
+end
+
+target:quickswift do
+    commonPods
+#    pod 'MLeaksFinder', :configurations => ['Debug'] #内存泄露检测
+#    pod 'R.swift'
+#    pod 'GDPerformanceView-Swift', :configurations => ['Debug']#cpu监听
+    pod 'FLEX', :configurations => ['Debug']
+end
+
+
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if target.name == 'RxSwift'
+            target.build_configurations.each do |config|
+                if config.name == 'Debug'
+                    config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['-D', 'TRACE_RESOURCES']
+                end
+            end
+        end
+    end
+end
