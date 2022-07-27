@@ -42,6 +42,7 @@ def commonPods
     pod 'FlexLayout'
     pod 'PinLayout'
     
+    pod 'SwiftLocation', '~> 4.0'
     
     # MediaKit
     # pod 'RPCircularProgress'

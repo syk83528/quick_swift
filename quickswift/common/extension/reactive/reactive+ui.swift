@@ -21,120 +21,120 @@ extension Reactive where Base: UIControl {
     
 }
 //
-//extension Reactive where Base: UIView {
-//
-//    enum DragDirection {
-//        case left, right
-//    }
-//
-//    /// UITapGestureRecognizer
-//    var tap: Signal<UITapGestureRecognizer, Never> {
-//        tap(touches: 1, taps: 1)
-//    }
-//    var pan: Signal<UIPanGestureRecognizer, Never> {
-//        base.isUserInteractionEnabled = true
-//        let t = UIPanGestureRecognizer()
-//        base.addGestureRecognizer(t)
-//        t.maximumNumberOfTouches = 1
-//        return t.reactive.stateChanged.take(during: lifetime)
-//    }
-//
-//    /// 拖动View, 生命周期结束时，所有的 UIGesture 都会被移除
-//    /// - Parameters:
-//    ///   - safeEdge: 安全边距
-//    ///   - isAdsorption: 停止时是否吸附，默认为 true
-//    func drag(safeEdge: UIEdgeInsets, isAdsorption: Bool = true) -> Signal<DragDirection, Never> {
-//
-//        return .init { (observer, signalLifetime) in
-//
-//            func panMove(_ pan: UIPanGestureRecognizer) {
-//                guard let panView = pan.view else { return }
-//
-//                let point = pan.translation(in: base.superview)
-//                panView.center = CGPoint(x: panView.center.x + point.x, y: panView.center.y + point.y)
-//                pan.setTranslation(.zero, in: base.superview)
-//            }
-//
-//            func panEnded(_ pan: UIPanGestureRecognizer) {
-//                guard let panView = pan.view else { return }
-//
-//                var newOrigin: CGPoint = .zero
-//                if panView.center.x > (.screenWidth / 2) {
-//                    newOrigin.x = .screenWidth - panView.width - safeEdge.right
-//                    observer.send(value: .right)
-//                } else {
-//                    newOrigin.x = safeEdge.left
-//                    observer.send(value: .left)
-//                }
-//
-//                guard isAdsorption else { return }
-//
-//                if panView.bottom >= (.screenHeight - panView.height - safeEdge.bottom) {
-//                    newOrigin.y = (.screenHeight - panView.height - safeEdge.bottom)
-//                } else if panView.y <= safeEdge.top {
-//                    newOrigin.y = safeEdge.top
-//                } else {
-//                    newOrigin.y = panView.y
-//                }
-//                UIView.animate(withDuration: 0.3, animations: {
-//                    panView.origin = newOrigin
-//                })
-//            }
-//
-//            let panGesture = UIPanGestureRecognizer()
-//            base.addGestureRecognizer(panGesture)
-//            panGesture.maximumNumberOfTouches = 1
-//
-//            panGesture.reactive.stateChanged.take(during: lifetime).observeValues { (gesture) in
-//                if gesture.state == .changed {
-//                    panMove(gesture)
-//                } else if gesture.state == .ended || gesture.state == .cancelled || gesture.state == .failed {
-//                    panEnded(gesture)
-//                }
-//            }
-//
-//            let disposable = lifetime.ended.observeCompleted(observer.sendCompleted)
-//            signalLifetime.observeEnded {
-//                disposable?.dispose()
-//                self.base.removeGestureRecognizer(panGesture)
-//            }
-//        }
-//    }
-//
-//    /// UILongPressGestureRecognizer
-//    func longPress(minimum pressDuration: TimeInterval, touches: Int = 1, taps: Int = 0, movement: CGFloat = 15.0) -> Signal<UILongPressGestureRecognizer, Never> {
-//        base.isUserInteractionEnabled = true
-//        let l = UILongPressGestureRecognizer.init()
-//        l.minimumPressDuration = pressDuration
-//        l.numberOfTouchesRequired = touches
-//        l.numberOfTapsRequired = taps
-//        l.allowableMovement = movement
-//        base.addGestureRecognizer(l)
-//
-//        if let tapGesture = base.gestureRecognizers?.filter({ $0 is UITapGestureRecognizer }).first {
-//            tapGesture.require(toFail: l)
-//        }
-//        return l.reactive.stateChanged.take(during: lifetime)
-//    }
-//
-//    func tap(touches: Int = 1, taps: Int = 1, cancelsTouchesInView: Bool = true) -> Signal<UITapGestureRecognizer, Never> {
-//        base.isUserInteractionEnabled = true
-//        let t = UITapGestureRecognizer.init()
-//        base.addGestureRecognizer(t)
-//        t.numberOfTouchesRequired = touches
-//        t.numberOfTapsRequired = taps
-//        t.cancelsTouchesInView = cancelsTouchesInView
-//        return t.reactive.stateChanged.take(during: lifetime)
-//    }
-//
-//    func swipe(direction: UISwipeGestureRecognizer.Direction = .right) -> Signal<UISwipeGestureRecognizer, Never> {
-//        base.isUserInteractionEnabled = true
-//        let t = UISwipeGestureRecognizer()
-//        base.addGestureRecognizer(t)
-//        t.direction = direction
-//        return t.reactive.stateChanged.take(during: lifetime)
-//    }
-//}
+public extension Reactive where Base: UIView {
+
+    enum DragDirection {
+        case left, right
+    }
+
+    /// UITapGestureRecognizer
+    var tap: Signal<UITapGestureRecognizer, Never> {
+        tap(touches: 1, taps: 1)
+    }
+    var pan: Signal<UIPanGestureRecognizer, Never> {
+        base.isUserInteractionEnabled = true
+        let t = UIPanGestureRecognizer()
+        base.addGestureRecognizer(t)
+        t.maximumNumberOfTouches = 1
+        return t.reactive.stateChanged.take(during: lifetime)
+    }
+
+    /// 拖动View, 生命周期结束时，所有的 UIGesture 都会被移除
+    /// - Parameters:
+    ///   - safeEdge: 安全边距
+    ///   - isAdsorption: 停止时是否吸附，默认为 true
+    func drag(safeEdge: UIEdgeInsets, isAdsorption: Bool = true) -> Signal<DragDirection, Never> {
+
+        return .init { (observer, signalLifetime) in
+
+            func panMove(_ pan: UIPanGestureRecognizer) {
+                guard let panView = pan.view else { return }
+
+                let point = pan.translation(in: base.superview)
+                panView.center = CGPoint(x: panView.center.x + point.x, y: panView.center.y + point.y)
+                pan.setTranslation(.zero, in: base.superview)
+            }
+
+            func panEnded(_ pan: UIPanGestureRecognizer) {
+                guard let panView = pan.view else { return }
+
+                var newOrigin: CGPoint = .zero
+                if panView.center.x > (.screenWidth / 2) {
+                    newOrigin.x = .screenWidth - panView.width - safeEdge.right
+                    observer.send(value: .right)
+                } else {
+                    newOrigin.x = safeEdge.left
+                    observer.send(value: .left)
+                }
+
+                guard isAdsorption else { return }
+
+                if panView.bottom >= (.screenHeight - panView.height - safeEdge.bottom) {
+                    newOrigin.y = (.screenHeight - panView.height - safeEdge.bottom)
+                } else if panView.y <= safeEdge.top {
+                    newOrigin.y = safeEdge.top
+                } else {
+                    newOrigin.y = panView.y
+                }
+                UIView.animate(withDuration: 0.3, animations: {
+                    panView.origin = newOrigin
+                })
+            }
+
+            let panGesture = UIPanGestureRecognizer()
+            base.addGestureRecognizer(panGesture)
+            panGesture.maximumNumberOfTouches = 1
+
+            panGesture.reactive.stateChanged.take(during: lifetime).observeValues { (gesture) in
+                if gesture.state == .changed {
+                    panMove(gesture)
+                } else if gesture.state == .ended || gesture.state == .cancelled || gesture.state == .failed {
+                    panEnded(gesture)
+                }
+            }
+
+            let disposable = lifetime.ended.observeCompleted(observer.sendCompleted)
+            signalLifetime.observeEnded {
+                disposable?.dispose()
+                self.base.removeGestureRecognizer(panGesture)
+            }
+        }
+    }
+
+    /// UILongPressGestureRecognizer
+    func longPress(minimum pressDuration: TimeInterval, touches: Int = 1, taps: Int = 0, movement: CGFloat = 15.0) -> Signal<UILongPressGestureRecognizer, Never> {
+        base.isUserInteractionEnabled = true
+        let l = UILongPressGestureRecognizer.init()
+        l.minimumPressDuration = pressDuration
+        l.numberOfTouchesRequired = touches
+        l.numberOfTapsRequired = taps
+        l.allowableMovement = movement
+        base.addGestureRecognizer(l)
+
+        if let tapGesture = base.gestureRecognizers?.filter({ $0 is UITapGestureRecognizer }).first {
+            tapGesture.require(toFail: l)
+        }
+        return l.reactive.stateChanged.take(during: lifetime)
+    }
+
+    func tap(touches: Int = 1, taps: Int = 1, cancelsTouchesInView: Bool = true) -> Signal<UITapGestureRecognizer, Never> {
+        base.isUserInteractionEnabled = true
+        let t = UITapGestureRecognizer.init()
+        base.addGestureRecognizer(t)
+        t.numberOfTouchesRequired = touches
+        t.numberOfTapsRequired = taps
+        t.cancelsTouchesInView = cancelsTouchesInView
+        return t.reactive.stateChanged.take(during: lifetime)
+    }
+
+    func swipe(direction: UISwipeGestureRecognizer.Direction = .right) -> Signal<UISwipeGestureRecognizer, Never> {
+        base.isUserInteractionEnabled = true
+        let t = UISwipeGestureRecognizer()
+        base.addGestureRecognizer(t)
+        t.direction = direction
+        return t.reactive.stateChanged.take(during: lifetime)
+    }
+}
 //
 //extension Signal where Value: UIButton, Error == Never {
 //

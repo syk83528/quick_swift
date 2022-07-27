@@ -10,35 +10,35 @@ import UIKit
 import ReactiveCocoa
 import ReactiveSwift
 
-struct Notif: RawRepresentable {
+public struct Notif: RawRepresentable {
     
-    typealias RawValue = String
+    public typealias RawValue = String
     
-    var rawValue: String
+    public var rawValue: String
     
-    init(rawValue: String) {
+    public init(rawValue: String) {
         self.rawValue = rawValue
     }
     
-    init(_ raw: String) {
+    public init(_ raw: String) {
         self.init(rawValue: raw)
     }
     
     private var nc = NotificationCenter.default
     
-    var name: Notification.Name {
+    public var name: Notification.Name {
         return Notification.Name(self.rawValue)
     }
     
-    func add(observer: Any, selector: Selector, object: Any? = nil) {
+    public func add(observer: Any, selector: Selector, object: Any? = nil) {
         nc.addObserver(observer, selector: selector, name: self.name, object: object)
     }
     
-    func remove(observer: Any, object: Any? = nil) {
+    public func remove(observer: Any, object: Any? = nil) {
         nc.removeObserver(observer, name: self.name, object: object)
     }
     
-    func post(userInfo: [AnyHashable: Any]? = nil, object: Any? = nil) {
+    public func post(userInfo: [AnyHashable: Any]? = nil, object: Any? = nil) {
         nc.post(name: self.name, object: object, userInfo: userInfo)
     }
     
@@ -56,20 +56,20 @@ struct Notif: RawRepresentable {
     ///   - obj: 生命周期绑定
     ///   - object: object description
     /// - Returns: signal
-    func listen(duringOf obj: AnyObject, object: Any? = nil) -> Signal<Notification, Never> {
+    public func listen(duringOf obj: AnyObject, object: Any? = nil) -> Signal<Notification, Never> {
         observer(object).take(duringLifetimeOf: obj)
     }
     
     /// 监听, 可自定义生命周期; 如需要绑定生命周期用 listen(duringOf:,object:)
     /// - Parameter object: object description
     /// - Returns: signal，可自定义生命周期, 选择 take 或者 duringOfObject
-    func observer(_ object: Any? = nil) -> Signal<Notification, Never> {
+    public func observer(_ object: Any? = nil) -> Signal<Notification, Never> {
         nc.reactive.notifications(forName: self.name, object: object as AnyObject?)
     }
 }
 
 
-extension Notification.Name {
+public extension Notification.Name {
     
     func add(observer: Any, selector: Selector, object: Any? = nil) {
         NotificationCenter.default.addObserver(observer, selector: selector, name: self, object: object)
@@ -95,7 +95,7 @@ extension Notification.Name {
     }
 }
 
-extension Signal where Value == Notification, Error == Never {
+public extension Signal where Value == Notification, Error == Never {
     
     @discardableResult
     func observeObject(_ object: @escaping (Any?) -> Void) -> Disposable? {
