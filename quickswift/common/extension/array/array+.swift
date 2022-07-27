@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Array {
+public extension Array {
     
     subscript (safe range: Range<Int>) -> ArraySlice<Element> {
         let startIndex = Swift.max(self.startIndex, range.lowerBound)

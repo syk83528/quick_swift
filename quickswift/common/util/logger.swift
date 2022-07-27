@@ -7,7 +7,7 @@
 
 import Foundation
 
-func log(_ paramter: Any) {
+public func commonllog(_ paramter: Any) {
 //#if GETLOG
 print("Get:___\(paramter)")
 //#endif

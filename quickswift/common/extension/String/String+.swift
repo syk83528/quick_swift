@@ -29,7 +29,7 @@ public func <=> (content: String, matchs: String) -> String? {
     return content[range]
 }
 
-extension String {
+public extension String {
 
     subscript (i: Int) -> String {
         return self[i ..< i + 1]
@@ -78,7 +78,7 @@ extension String {
     }
 }
 
-extension String.Index {
+public extension String.Index {
     func int(_ string: String) -> Int {
         string.distance(from: string.startIndex, to: self)
     }

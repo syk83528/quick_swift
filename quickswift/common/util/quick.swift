@@ -7,4 +7,4 @@
 
 import Foundation
 
-struct Keys { }
+public struct Keys { }

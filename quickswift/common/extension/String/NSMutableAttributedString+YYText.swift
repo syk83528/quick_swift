@@ -35,7 +35,7 @@ fileprivate extension Keys {
     }
 }
 
-extension NSMutableAttributedString {
+public extension NSMutableAttributedString {
     
     var rangeOfAll: NSRange {
         NSRange(location: 0, length: string.utf16.count)
@@ -102,7 +102,7 @@ extension NSMutableAttributedString {
     }
 }
 
-extension NSMutableAttributedString {
+public extension NSMutableAttributedString {
     
     @discardableResult
     static func += (_ lhs: NSMutableAttributedString, _ rhs: NSMutableAttributedString) -> NSMutableAttributedString {

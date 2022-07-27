@@ -20,7 +20,7 @@ public class Regex: NSObject {
     /// (是否包含匹配的文本).
     /// matches: expression(表达式)
     /// content: 被查找的文本
-    class func match(_ matches: String, _ content: String) -> Bool {
+    public class func match(_ matches: String, _ content: String) -> Bool {
         let regex = try? NSRegularExpression.init(pattern: matches, options: [.caseInsensitive, .dotMatchesLineSeparators])
         if let matchResult = regex?.matches(in: content, options: .withTransparentBounds, range: NSRange(location: 0, length: content.utf16.count)) {
             return matchResult.count > 0
@@ -30,7 +30,7 @@ public class Regex: NSObject {
     
     /// Matching exp, return finded str.
     /// (匹配表达式, 返回找到的字符串).
-    class func expression(_ expression: String, content: String) -> NSRange? {
+    public class func expression(_ expression: String, content: String) -> NSRange? {
         let tempBody = content
         do {
             let regex = try NSRegularExpression.init(pattern: expression, options: [.caseInsensitive, .dotMatchesLineSeparators])
@@ -44,7 +44,7 @@ public class Regex: NSObject {
         }
     }
     
-    class func expression(_ expression: String, options: NSRegularExpression.Options = []) -> NSRegularExpression? {
+    public class func expression(_ expression: String, options: NSRegularExpression.Options = []) -> NSRegularExpression? {
         do {
             let regex = try NSRegularExpression.init(pattern: expression, options: options)
             return regex
@@ -56,7 +56,7 @@ public class Regex: NSObject {
 }
 extension NSRegularExpression {
     
-    func enumerateMatches(in string: String,
+    public func enumerateMatches(in string: String,
                           options: MatchingOptions = [],
                           range: Range<String.Index>,
                           using block: (_ result: NSTextCheckingResult?, _ flags: MatchingFlags, _ stop: inout Bool) -> Void) {
@@ -74,7 +74,7 @@ extension NSRegularExpression {
 
 extension NSRegularExpression {
     
-    func m(in content: String, do block: (_ range: NSRange, _ stop: inout Bool) -> Void) {
+    public func m(in content: String, do block: (_ range: NSRange, _ stop: inout Bool) -> Void) {
         guard let r = Range<String.Index>.init(NSRange(location: 0, length: content.utf16.count), in: content) else { return }
         enumerateMatches(in: content, range: r) { (result, _, stop) in
             if let re = result {

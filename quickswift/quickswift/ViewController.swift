@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import common
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+//        var a: Dict = []
         // Do any additional setup after loading the view.
     }
 

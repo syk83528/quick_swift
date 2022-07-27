@@ -11,7 +11,7 @@ import ReactiveCocoa
 import ReactiveSwift
 
 // MARK: - SignalProducer
-extension SignalProducer {
+public extension SignalProducer {
     
     @available(*, deprecated, message: "用原生的 observe(on:), UI 线程不要用 QueueScheduler.main 用 UIScheduler()")
     var onMain: SignalProducer {
@@ -87,7 +87,7 @@ extension SignalProducer {
 }
 
 // MARK: - Action where Input == ()
-extension Action where Input == () {
+public extension Action where Input == () {
     var executable: CocoaAction<Any> {
         CocoaAction<Any>(self)
     }
@@ -111,7 +111,7 @@ extension Action where Input == () {
     }
 }
 
-extension SignalProducer {
+public extension SignalProducer {
 
     func retry(when: @escaping ((Error) -> Bool), upTo: Int = 3, interval: TimeInterval = 3, scheduler: DateScheduler = QueueScheduler.main) -> SignalProducer<Value, Error> {
         precondition(upTo >= 0)
@@ -126,7 +126,7 @@ extension SignalProducer {
                 return p
             }
             let delay = interval / Double(upTo)
-            log("🔄\(upTo - 1 == 0 ? "Final retry" : "Retry") after \(delay) seconds")
+            commonllog("🔄\(upTo - 1 == 0 ? "Final retry" : "Retry") after \(delay) seconds")
             p = SignalProducer.empty
                 .delay(delay, on: scheduler)
                 .concat(self.producer.retry(when: when,
@@ -138,7 +138,7 @@ extension SignalProducer {
     }
 }
 
-extension SignalProducer {
+public extension SignalProducer {
     func then<U>(_ transform: @escaping (Value) -> SignalProducer<U, Error>) -> SignalProducer<U, Error> {
         producer.flatMap(.concat) { v -> SignalProducer<U, Error> in
             return transform(v)
@@ -146,16 +146,16 @@ extension SignalProducer {
     }
 }
 
-extension ReactiveExtensionsProvider {
-    public var r: ReactiveSwift.Reactive<Self> { reactive }
-    public static var r: ReactiveSwift.Reactive<Self>.Type { reactive }
+public extension ReactiveExtensionsProvider {
+    var r: ReactiveSwift.Reactive<Self> { reactive }
+    static var r: ReactiveSwift.Reactive<Self>.Type { reactive }
 }
 
 infix operator <~? : BindingPrecedence
 
-extension BindingTargetProvider {
+public extension BindingTargetProvider {
     @discardableResult
-    public static func <~?
+    static func <~?
             <Source: BindingSource>
             (provider: Self, source: Source) -> Disposable?
             where Source.Value == Value {
@@ -163,7 +163,7 @@ extension BindingTargetProvider {
     }
 
     @discardableResult
-    public static func <~?
+    static func <~?
             <Source: BindingSource>
             (provider: Self, source: Source) -> Disposable?
             where Value == Source.Value? {
@@ -178,7 +178,7 @@ fileprivate extension Keys {
     }
 }
 
-extension CocoaAction {
+public extension CocoaAction {
 
     var isUserEnabled: Property<Bool>? {
         get {
@@ -190,21 +190,21 @@ extension CocoaAction {
     }
 }
 
-extension Action {
+public extension Action {
     @discardableResult
     func start(_ input: Input) -> Disposable {
         apply(input).start()
     }
 }
 
-protocol KVObserveExtensionsProvider {}
+public protocol KVObserveExtensionsProvider {}
 
-extension KVObserveExtensionsProvider {
-    public var o: KVObserve<Self> {
+public extension KVObserveExtensionsProvider {
+    var o: KVObserve<Self> {
         KVObserve(self)
     }
 
-    public static var o: KVObserve<Self>.Type {
+    static var o: KVObserve<Self>.Type {
         KVObserve<Self>.self
     }
 }
@@ -217,27 +217,27 @@ public struct KVObserve <Base> {
     }
 }
 
-extension KVObserve where Base: NSObject {
+public extension KVObserve where Base: NSObject {
 
-    public subscript<Value>(keyPath: KeyPath<Base, Value>) -> SignalProducer<Value, Never> {
+    subscript<Value>(keyPath: KeyPath<Base, Value>) -> SignalProducer<Value, Never> {
         self.base.reactive.producer(for: keyPath).take(duringLifetimeOf: self.base)
     }
-    public subscript<Value>(keyPath: KeyPath<Base, Value?>) -> SignalProducer<Value?, Never> {
+    subscript<Value>(keyPath: KeyPath<Base, Value?>) -> SignalProducer<Value?, Never> {
         self.base.reactive.producer(for: keyPath).take(duringLifetimeOf: self.base)
     }
-    public subscript(keyPath: String) -> SignalProducer<Any?, Never> {
+    subscript(keyPath: String) -> SignalProducer<Any?, Never> {
         self.base.reactive.producer(forKeyPath: keyPath).take(duringLifetimeOf: self.base)
     }
 }
 
-protocol KVCBindingTargetExtensionsProvider {}
+public protocol KVCBindingTargetExtensionsProvider {}
 
-extension KVCBindingTargetExtensionsProvider {
-    public var p: KVCBindingTarget<Self> {
+public extension KVCBindingTargetExtensionsProvider {
+    var p: KVCBindingTarget<Self> {
         KVCBindingTarget(self)
     }
 
-    public static var p: KVCBindingTarget<Self>.Type {
+    static var p: KVCBindingTarget<Self>.Type {
         KVCBindingTarget<Self>.self
     }
 }
@@ -250,15 +250,15 @@ public struct KVCBindingTarget <Base> {
     }
 }
 
-extension KVCBindingTarget where Base: NSObject {
+public extension KVCBindingTarget where Base: NSObject {
 
-    public subscript<Value>(keyPath: ReferenceWritableKeyPath<Base, Value>) -> BindingTarget<Value> {
+    subscript<Value>(keyPath: ReferenceWritableKeyPath<Base, Value>) -> BindingTarget<Value> {
         let key = NSExpression(forKeyPath: keyPath).keyPath
         return self.base.reactive.makeBindingTarget { (b: Base, v: Value) in
             b.setValue(v, forKey: key)
         }
     }
-    public subscript<Value>(keyPath: ReferenceWritableKeyPath<Base, Value?>) -> BindingTarget<Value?> {
+    subscript<Value>(keyPath: ReferenceWritableKeyPath<Base, Value?>) -> BindingTarget<Value?> {
         let key = NSExpression(forKeyPath: keyPath).keyPath
         return self.base.reactive.makeBindingTarget { (b: Base, v: Value?) in
             b.setValue(v, forKey: key)
@@ -268,7 +268,7 @@ extension KVCBindingTarget where Base: NSObject {
 
 extension NSObject: KVObserveExtensionsProvider, KVCBindingTargetExtensionsProvider {}
 
-extension Signal {
+public extension Signal {
     func ignoreErrors() -> Signal<Value, Never> {
         flatMapError { _ in Signal<Value, Never>.empty }
     }
@@ -301,7 +301,7 @@ extension Signal {
     }
 }
 
-extension Signal where Error == Never {
+public extension Signal where Error == Never {
     func property(initial: Value) -> Property<Value> {
         Property.init(initial: initial, then: self)
     }
@@ -317,62 +317,62 @@ extension Signal where Error == Never {
     }
 }
 
-extension SignalProducer where Error == Never {
+public extension SignalProducer where Error == Never {
     func property(initial: Value) -> Property<Value> {
         Property.init(initial: initial, then: self)
     }
 }
 
-extension Reactive where Base: UIGestureRecognizer {
+public extension Reactive where Base: UIGestureRecognizer {
     
     /// Sets whether the control is enabled.
-    public var isEnabled: BindingTarget<Bool> {
+    var isEnabled: BindingTarget<Bool> {
         return makeBindingTarget { $0.isEnabled = $1 }
     }
 
 }
 
 
-extension SignalProducer where Value == Bool, Error == Never {
+public extension SignalProducer where Value == Bool, Error == Never {
     
     func mapReversed() -> SignalProducer<Value, Error> {
         map({ !$0 })
     }
 }
 
-extension SignalProducer where Value == String, Error == Never {
+public extension SignalProducer where Value == String, Error == Never {
     
     func bind(to: MutableProperty<String>) {
         to <~ self
     }
 }
 
-extension SignalProducer where Value: Optionalable {
+public extension SignalProducer where Value: Optionalable {
     
     func filterNil() -> SignalProducer<Value, Never> {
         producer.ignoreErrors().filter({ $0.wrapped == nil })
     }
 }
 
-extension QueueScheduler {
+public extension QueueScheduler {
     @discardableResult
     func schedule(after timeInterval: TimeInterval, action: @escaping () -> Void) -> Disposable? {
         schedule(after: Date() + timeInterval, action: action)
     }
         
     @discardableResult
-    public func schedule(after timeInterval: TimeInterval, interval: TimeInterval, action: @escaping () -> Void) -> Disposable? {
+    func schedule(after timeInterval: TimeInterval, interval: TimeInterval, action: @escaping () -> Void) -> Disposable? {
         schedule(after: timeInterval, interval: interval, leeway: interval * 0.1, action: action)
     }
     
     @discardableResult
-    public func schedule(after timeInterval: TimeInterval, interval: TimeInterval, leeway: TimeInterval, action: @escaping () -> Void) -> Disposable? {
+    func schedule(after timeInterval: TimeInterval, interval: TimeInterval, leeway: TimeInterval, action: @escaping () -> Void) -> Disposable? {
         schedule(after: Date() + timeInterval, interval: DispatchTimeInterval.milliseconds(Int(interval * 1000)), leeway: DispatchTimeInterval.milliseconds(Int(interval * 1000)), action: action)
     }
 }
 
 
-extension SignalProducer where Value: Sequence {
+public extension SignalProducer where Value: Sequence {
     @discardableResult
     func compactMap<T>(transform: @escaping (Value.Element) -> T?) -> SignalProducer<[T], Error> {
         producer.map { (sequence) -> [T] in
@@ -388,7 +388,7 @@ extension SignalProducer where Value: Sequence {
     }
 }
 
-extension Signal where Value: Sequence {
+public extension Signal where Value: Sequence {
     func compactMap<T>(transform: @escaping (Value.Element) -> T?) -> Signal<[T], Error> {
         map { (sequence) -> [T] in
             sequence.compactMap(transform)
@@ -402,7 +402,7 @@ extension Signal where Value: Sequence {
     }
 }
 
-extension Signal where Value == String, Error == Never {
+public extension Signal where Value == String, Error == Never {
     
     /// 返回 Bool
     /// - Parameters:
@@ -417,7 +417,7 @@ extension Signal where Value == String, Error == Never {
     }
 }
 
-extension Reactive where Base: UIBarButtonItem {
+public extension Reactive where Base: UIBarButtonItem {
     func `do`(_ closure: @escaping ((Base) -> Void)) {
         pressed = SignalProducer<(), Never>.init { [weak base] (observer, _) in
             observer.sendCompleted()

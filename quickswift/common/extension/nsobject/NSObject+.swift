@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension NSObject {
+public extension NSObject {
     /// get the instance's class name, will be add namespace prefix like: taoqu.ViewController
     var clazzName: String {
         NSStringFromClass(type(of: self))
@@ -19,19 +19,19 @@ extension NSObject {
     }
     
     /// 带命名空间(duomi.XXXController)
-    public var classFullName: String {
+    var classFullName: String {
         return type(of: self).classFullName
     }
     /// 带命名空间
-    public static var classFullName: String {
+    static var classFullName: String {
         return NSStringFromClass(self)
     }
     /// 不带命名空间
-    public var className: String {
+    var className: String {
         return type(of: self).className
     }
     /// 不带命名空间
-    public static var className: String {
+    static var className: String {
         return String(classFullName.split(separator: ".").last ?? "")
     }
 }

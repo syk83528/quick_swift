@@ -170,7 +170,7 @@ extension Device {
 
 
 
-extension Device {
+public extension Device {
     
     enum Network: String {
         case wifi = "en0"
@@ -238,7 +238,7 @@ extension Device {
             
             do {
                 let ip = try String(contentsOf: ipURL, encoding: .utf8)
-                log("networkIPAddress ip:\(ip)")
+                commonllog("networkIPAddress ip:\(ip)")
                 if let t = ip.ipAddress {
                     networkIP = t
                 }

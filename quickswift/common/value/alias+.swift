@@ -7,8 +7,8 @@
 
 import Foundation
 
-typealias Dict = [String: Any]
-typealias NullableDict = [String: Any?]
-typealias AnyDict = [AnyHashable: Any]
+public typealias Dict = [String: Any]
+public typealias NullableDict = [String: Any?]
+public typealias AnyDict = [AnyHashable: Any]
 //typealias GradientView = JSTGradientView
 //typealias BindableCollectionViewCell = UICollectionViewCell & ListBindable
