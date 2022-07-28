@@ -7,7 +7,16 @@
 
 import Foundation
 import HandyJSON
+import IGListDiffKit
 
-class DataModel: HandyJSON {
-    required init() { }
+class DataModel: NSObject, HandyJSON, ListDiffable {
+    required override init() { }
+    
+    func diffIdentifier() -> NSObjectProtocol { (toJSONString() ?? "") as NSObjectProtocol }
+
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool { self === object }
+
+    func mapping(mapper: HelpingMapper) { }
+
+    func didFinishMapping() { }
 }

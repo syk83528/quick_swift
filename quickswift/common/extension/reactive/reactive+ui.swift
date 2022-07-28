@@ -10,7 +10,7 @@ import ReactiveCocoa
 import ReactiveSwift
 
 
-extension Reactive where Base: UIControl {
+public extension Reactive where Base: UIControl {
     
     var touchUpInside: Signal<Base, Never> {
         if !base.isUserInteractionEnabled {

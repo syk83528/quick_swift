@@ -12,6 +12,16 @@ import ReactiveSwift
 import ReactiveCocoa
 import YTPageController
 
+protocol StoryboardCompatible {
+    static func fromStoryboard() -> Self
+    static var storyboardName: String { get }
+}
+
+extension StoryboardCompatible {
+    static func fromStoryboard() -> Self {
+        UIStoryboard(name: storyboardName, bundle: Bundle.main).instantiateViewController(withIdentifier: String(describing: self)) as! Self
+    }
+}
 extension UIViewController {
     public static var current: UIViewController? {
         guard let window = SceneDelegate.shared?.window, let r = window.rootViewController else {

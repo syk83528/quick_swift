@@ -10,11 +10,17 @@ import common
 
 class MainViewController: UITabBarController {
     lazy var tabProviders: [TabProvider] = [
+        example,
         home
     ]
     
     let home = HomeVC()
-    
+    let example = ExampleListController()
+    // MARK: - -----------------------------------------UI
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        selectedViewController?.preferredStatusBarStyle ?? .default
+    }
+    // MARK: - -----------------------------------------system
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,16 +45,14 @@ class MainViewController: UITabBarController {
     }
     
     func setupViewControllers() {
-//        for (_, tabProvider) in tabProviders.enumerated() {
-//            let item = tabProvider.tabBarItem
-//            let controller = tabProvider.controller
-//            controller.tabBarItem = item
-//        }
-        home.tabBarItem = (home as TabProvider).tabBarItem
+        for (_, tabProvider) in tabProviders.enumerated() {
+            let item = tabProvider.tabBarItem
+            let controller = tabProvider.controller
+            controller.tabBarItem = item
+        }
 //
-//        let controllers = tabProviders.compactMap { $0.controller }
-        self.viewControllers = [home]
-//        setViewControllers([home], animated: false)
+        let controllers = tabProviders.compactMap { $0.controller }
+        setViewControllers(controllers, animated: false)
     }
     
     override func viewDidLayoutSubviews() {

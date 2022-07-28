@@ -312,7 +312,7 @@ public extension Bool {
 }
 
 // MARK: - SingedInteger
-extension SignedInteger {
+public extension SignedInteger {
 
     /// (取绝对值).
     var abs: Self { Swift.abs(self) }

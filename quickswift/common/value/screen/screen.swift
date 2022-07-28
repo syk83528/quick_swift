@@ -38,3 +38,49 @@ public struct Screen {
         return 20 + 44
     }()
 }
+
+
+public struct ScreenUtilInit {
+    /// 设计图上按什么机型设计 这里就初始化成什么大小
+    public static var desizeSize: CGSize = MakeSize(375, 667)
+}
+
+public extension CGFloat {
+    public var w: CGFloat {
+        self / ScreenUtilInit.desizeSize.width * UIScreen.main.bounds.size.width
+    }
+    
+    public var h: CGFloat {
+        self / ScreenUtilInit.desizeSize.height * UIScreen.main.bounds.size.width
+    }
+}
+
+public extension Int {
+    var w: CGFloat {
+        CGFloat(self) / ScreenUtilInit.desizeSize.width * UIScreen.main.bounds.size.width
+    }
+    
+    var h: CGFloat {
+        CGFloat(self) / ScreenUtilInit.desizeSize.height * UIScreen.main.bounds.size.width
+    }
+}
+
+public extension Double {
+    var w: CGFloat {
+        CGFloat(self) / ScreenUtilInit.desizeSize.width * UIScreen.main.bounds.size.width
+    }
+    
+    var h: CGFloat {
+        CGFloat(self) / ScreenUtilInit.desizeSize.height * UIScreen.main.bounds.size.width
+    }
+}
+
+public extension Int64 {
+    var w: CGFloat {
+        CGFloat(self) / ScreenUtilInit.desizeSize.width * UIScreen.main.bounds.size.width
+    }
+    
+    var h: CGFloat {
+        CGFloat(self) / ScreenUtilInit.desizeSize.height * UIScreen.main.bounds.size.width
+    }
+}
