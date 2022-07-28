@@ -8,11 +8,13 @@
 import UIKit
 import common
 
-class ViewController: UIViewController {
-
+class ViewController: BasePage {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        view.backgroundColor = .orange
         
 //        var a: Dict = []
         // Do any additional setup after loading the view.

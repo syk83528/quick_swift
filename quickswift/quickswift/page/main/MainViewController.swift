@@ -6,20 +6,14 @@
 //
 
 import Foundation
-
+import common
 
 class MainViewController: UITabBarController {
     lazy var tabProviders: [TabProvider] = [
-        example,
-        discover,
-        home,
-        mine
+        home
     ]
     
-    let discover = DiscoverVC()
-    let mine = MineViewController()
-    let home = HomeViewController()
-    let example = ExampleListController()
+    let home = HomeVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,14 +39,16 @@ class MainViewController: UITabBarController {
     }
     
     func setupViewControllers() {
-        for (_, tabProvider) in tabProviders.enumerated() {
-            let item = tabProvider.tabBarItem
-            let controller = tabProvider.controller
-            controller.tabBarItem = item
-        }
-        
-        let controllers = tabProviders.compactMap { $0.controller }
-        setViewControllers(controllers, animated: false)
+//        for (_, tabProvider) in tabProviders.enumerated() {
+//            let item = tabProvider.tabBarItem
+//            let controller = tabProvider.controller
+//            controller.tabBarItem = item
+//        }
+        home.tabBarItem = (home as TabProvider).tabBarItem
+//
+//        let controllers = tabProviders.compactMap { $0.controller }
+        self.viewControllers = [home]
+//        setViewControllers([home], animated: false)
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,7 +58,7 @@ class MainViewController: UITabBarController {
     }
     
     deinit {
-        log("💀💀💀------------ \(Self.self)")
+        llog("💀💀💀------------ \(Self.self)")
     }
 }
 

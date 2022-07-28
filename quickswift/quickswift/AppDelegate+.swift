@@ -7,15 +7,15 @@
 
 import Foundation
 
-extension AppDelegate {
+extension SceneDelegate {
     func prepareRootController(firstLaunch: Bool = false) {
         guard let window = self.window else { return }
-        for delegate in Self.delegates {
-            if let rootProvider = delegate as? RootProviderProtocol {
-                if rootProvider.provide(for: window, firstLaunch: firstLaunch) {
-                    return
-                }
-            }
-        }
+        
+        let vc = MainViewController()
+        _ = DebugHandler.shared
+        window.rootViewController = vc
+        window.backgroundColor = .white
+        window.makeKeyAndVisible()
+        return
     }
 }

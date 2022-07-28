@@ -19,7 +19,6 @@ def commonPods
     pod 'MarqueeLabel'
     pod 'DZNEmptyDataSet'
     pod 'IGListKit', '~> 4.0.0'
-    pod 'YTPageController'
     pod 'RTNavigationController', :path => 'LocalPod/RTNavigationController/'
     pod 'YYText'
     pod 'YYImage/WebP'
@@ -59,6 +58,8 @@ end
 
 target:quickswift do
     commonPods
+    
+    pod 'YTPageController'
 #    pod 'MLeaksFinder', :configurations => ['Debug'] #内存泄露检测
 #    pod 'R.swift'
 #    pod 'GDPerformanceView-Swift', :configurations => ['Debug']#cpu监听

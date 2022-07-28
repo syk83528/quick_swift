@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import common
+
 extension Notif {
     struct App {
         static let keyboardWillChangeFrame = Notif("App.keyboardWillChangeFrame")
@@ -19,19 +21,19 @@ class MainAppDelegate: NSObject, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        _ = DebugHandler.shared
+//        _ = DebugHandler.shared
         
         return true
     }
 }
 
 
-extension MainAppDelegate: RootProviderProtocol {
-    func provide(for window: UIWindow, firstLaunch: Bool) -> Bool {
-        guard let _ = User.loginer else { return false }
-        
-        window.rootViewController = RTRootNavigationController(rootViewController: MainViewController())
-        window.makeKeyAndVisible()
-        return true
-    }
-}
+//extension MainAppDelegate: RootProviderProtocol {
+//    func provide(for window: UIWindow, firstLaunch: Bool) -> Bool {
+//        guard let _ = User.loginer else { return false }
+//
+//        window.rootViewController = RTRootNavigationController(rootViewController: MainViewController())
+//        window.makeKeyAndVisible()
+//        return true
+//    }
+//}
