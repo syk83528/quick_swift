@@ -1,0 +1,83 @@
+//
+//  MainViewController.swift
+//  quick
+//
+//  Created by suyikun on 2021/6/21.
+//
+
+import Foundation
+
+
+class MainViewController: UITabBarController {
+    lazy var tabProviders: [TabProvider] = [
+        example,
+        discover,
+        home,
+        mine
+    ]
+    
+    let discover = DiscoverVC()
+    let mine = MineViewController()
+    let home = HomeViewController()
+    let example = ExampleListController()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        navigationController?.isNavigationBarHidden = true
+        
+        tabBar.isTranslucent = false
+        tabBar.tintColor = .hex(0x741EFF)
+        tabBar.shadowImage = UIImage()
+        tabBar.backgroundImage = UIImage()
+        tabBar.clipsToBounds = false
+        tabBar.layer.shadowOffset = MakeSize(0, -1)
+        tabBar.layer.shadowRadius = 3
+        tabBar.layer.shadowColor = UIColor.hex(0xbdbdbd).alpha(0.5).cgColor
+        tabBar.layer.shadowOpacity = 1.0
+        
+        setupViewControllers()
+        
+        r.signal(for: #selector(viewDidAppear(_:))).take(first: 1).take(during: self.r.lifetime).observeValues { [weak self] (_) in
+            guard let self = self else { return }
+            self.fixShadowImage()
+        }
+    }
+    
+    func setupViewControllers() {
+        for (_, tabProvider) in tabProviders.enumerated() {
+            let item = tabProvider.tabBarItem
+            let controller = tabProvider.controller
+            controller.tabBarItem = item
+        }
+        
+        let controllers = tabProviders.compactMap { $0.controller }
+        setViewControllers(controllers, animated: false)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    deinit {
+        log("💀💀💀------------ \(Self.self)")
+    }
+}
+
+extension MainViewController {
+    func fixShadowImage() {
+        if #available(iOS 13.0, *) {
+            let appearance = tabBar.standardAppearance
+            appearance.shadowImage = nil
+            appearance.shadowColor = nil
+            appearance.backgroundColor = .white
+            tabBar.standardAppearance = appearance
+        } else {
+            // Fallback on earlier versions
+            tabBar.shadowImage = UIImage()
+            tabBar.backgroundImage = UIImage()
+        }
+    }
+}

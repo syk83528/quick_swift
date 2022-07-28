@@ -8,41 +8,37 @@ inhibit_all_warnings!
 
 def commonPods
   # Base
-    pod 'IQKeyboardManagerSwift'
     pod 'Then'
+    
+    # Frame框架
     pod 'Moya/ReactiveSwift', '~> 14.0'
     pod 'ReactiveCocoa'
-    pod 'SAMKeychain'
+    # UI组件
     pod 'SDWebImage'
     pod 'SDWebImage/WebP'
-    
-    # Data
-    pod 'HandyJSON'
-    pod 'SwiftyJSON'
-    
-    pod 'CryptoSwift'
-    pod 'MMKV', '= 1.2.2'
-    
-    pod 'SSZipArchive', '~> 2.2.3'
-    
-    # UI
     pod 'MarqueeLabel'
     pod 'DZNEmptyDataSet'
     pod 'IGListKit', '~> 4.0.0'
     pod 'YTPageController'
-    # pod 'RTNavigationController', :path => 'LocalPod/RTNavigationController/'
-    
+    pod 'RTNavigationController', :path => 'LocalPod/RTNavigationController/'
     pod 'YYText'
     pod 'YYImage/WebP'
     pod 'YYImage'
     pod 'MJRefresh'
-    
-    # Layout
     pod 'SnapKit', '~> 5.0.0'
     pod 'FlexLayout'
     pod 'PinLayout'
-    
     pod 'SwiftLocation', '~> 4.0'
+    # util工具
+    pod 'IQKeyboardManagerSwift'
+    pod 'SAMKeychain'
+    
+    # Data数据处理
+    pod 'HandyJSON'
+    pod 'SwiftyJSON'
+    pod 'CryptoSwift'
+    pod 'MMKV', '= 1.2.2'
+    pod 'SSZipArchive', '~> 2.2.3'
     
     # MediaKit
     # pod 'RPCircularProgress'
