@@ -17,6 +17,7 @@ protocol CollectionProvider: UIViewController {
     var collectionViewController: CollectionViewController<DataType> { get }
     var collectionView: CollectionView { get }
     var list:[DataType] { get }
+    var adapter: ListAdapter { get }
 }
 
 fileprivate var collectionViewControllerKey: UInt8 = 0
@@ -43,16 +44,20 @@ extension CollectionProvider {
         collectionViewController.collectionView
     }
     
-    var adapt: ListAdapter {
+    var adapter: ListAdapter {
         collectionViewController.adapt
     }
     var list:[DataType] {
         get {
-            collectionViewController.list
+            collectionViewController.data
         }
         set {
-            collectionViewController.list = newValue
+            collectionViewController.data = newValue
         }
+    }
+    
+    func forceReloadData(_ completion: ((Bool) -> Void)? = nil) {
+        adapter.reloadData(completion: completion)
     }
 }
 
@@ -68,7 +73,18 @@ class CollectionViewController<T: DiffableJSON>: UIViewController,
     
     
     //MARK:- --------------------------------------infoProperty
-    var list:[T] = []
+    /// ig只有一维数组,  每一个item都是一个section ,  row是sectionController返回的数组
+    var data:[T] = []
+    /// 搜索的数据
+    var searchData: [T] = []
+    /// 是否在搜索中
+    var isInSearch: Bool = false
+    /// 真正的数据
+    var currentData: [T] {
+        get {
+            isInSearch ? searchData : data
+        }
+    }
     var adapt:ListAdapter!
     var workingRangeSize: Int = 3
     
@@ -205,8 +221,8 @@ class CollectionViewController<T: DiffableJSON>: UIViewController,
     //MARK:- --------------------------------------DataSource, Delegate
     //MARK:- --------------------------------------IGListDatasource
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        log("list: \(list.count)")
-        return list
+        log("list: \(currentData.count)")
+        return currentData
     }
     
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
@@ -216,7 +232,7 @@ class CollectionViewController<T: DiffableJSON>: UIViewController,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        (list[safe: indexPath.row] as? LayoutCachable)?.cellSize ?? .zero
+        (currentData[safe: indexPath.row] as? LayoutCachable)?.cellSize ?? .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -225,7 +241,7 @@ class CollectionViewController<T: DiffableJSON>: UIViewController,
             delegate.collectionView?(collectionView, didSelectItemAt: indexPath)
             return
         }
-        if let model = list[safe: indexPath.row] {
+        if let model = currentData[safe: indexPath.row] {
             selectCellInput.send(value: model)
             return
         }
@@ -305,7 +321,7 @@ class CollectionViewController<T: DiffableJSON>: UIViewController,
     
     func refreshEmptyStatus() {
         if self.shouldDisplayEmptyView {
-            self.internalShouldDisplayEmptyView = list.isEmpty
+            self.internalShouldDisplayEmptyView = currentData.isEmpty
         } else {
             self.internalShouldDisplayEmptyView = false
         }

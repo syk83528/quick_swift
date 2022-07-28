@@ -362,7 +362,7 @@ extension Router {
 
 extension UINavigationController {
     public static var pusher: UINavigationController? {
-        guard let targetWindow = AppDelegate.shared.window, let r = targetWindow.rootViewController else {
+        guard let targetWindow = SceneDelegate.shared?.window, let r = targetWindow.rootViewController else {
             return nil
         }
         

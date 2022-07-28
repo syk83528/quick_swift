@@ -68,12 +68,23 @@ extension TableProvider {
         tableViewController.tableView
     }
     
+    /// 单列表用这个
     var list:[DataType] {
         get {
-            tableViewController.list
+            tableViewController.list(for: 0)
         }
         set {
-            tableViewController.list = newValue
+            tableViewController.data = [newValue]
+        }
+    }
+    
+    /// 分组用这个
+    var section: [[DataType]] {
+        get {
+            tableViewController.data
+        }
+        set {
+            tableViewController.data = newValue
         }
     }
 }
@@ -85,17 +96,38 @@ enum HeaderFooterProvideType: Int {
     case view, height
 }
 class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UIGestureRecognizerDelegate {
-    //MARK:- --------------------------------------UI
+    // MARK: - --------------------------------------UI
     var tableViewStyle: UITableView.Style {
         .plain
     }
     var tableView: TableView!
-    //MARK:- --------------------------------------ScrollStateful
+    // MARK: - --------------------------------------ScrollStateful
     var scrollView: UIScrollView { tableView }
     var lastContentOffset: CGPoint = .zero
     var scrollState: ScrollState = .pending
-    //MARK:- --------------------------------------Data
-    var list: [T] = []
+    // MARK: - --------------------------------------Data
+    var data: [[T]] = []
+    /// 搜索的数据
+    var searchData: [[T]] = []
+    /// 是否在搜索中
+    var isInSearch: Bool = false
+    /// 真正的数据
+    var currentData: [[T]] {
+        get {
+            isInSearch ? searchData : data
+        }
+    }
+    
+    var isEmpty: Bool {
+        var c = 0
+        for d in currentData {
+            c = c + d.count
+            if c > 0 {
+                break
+            }
+        }
+        return c == 0
+    }
     /// 是否第一次请求回来
     var isFirstRequestRespond: Bool = false
     var canEditClosure: ((T, IndexPath) -> Bool)?
@@ -125,7 +157,7 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
     private weak var p: MultiScrollViewController?
     private var checkP: Bool = false
     
-    //MARK:- --------------------------------------System
+    // MARK: - --------------------------------------System
     init() {
         super.init(nibName: nil, bundle: nil)
         configTable()
@@ -243,7 +275,7 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
     
     
     
-    //MARK:- --------------------------------------Refresh
+    // MARK: - --------------------------------------Refresh
 //    func feed<E:Swift.Error>(_ requestClosure: @escaping (NetRequestType, Int) -> SignalProducer<[T], E>?) {
 //
 //        var refreshAction: CocoaAction<Any>?
@@ -311,7 +343,7 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
 //        tableView.refreshAction = refreshAction
 //        tableView.loadMoreAction = loadMoreAction
 //    }
-    //MARK:- --------------------------------------Empty
+    // MARK: --------------------------------------Empty
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView! {
         guard let emptyView = self.emptyView else {
             warning("You should set a value for `emptyView` to display empty placeholder, maybe use `EmptyView` to implement is easier.")
@@ -331,13 +363,13 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
     
     func refreshEmptyStatus() {
         if self.shouldDisplayEmptyView {
-            self.internalShouldDisplayEmptyView = list.isEmpty
+            self.internalShouldDisplayEmptyView = isEmpty
         } else {
             self.internalShouldDisplayEmptyView = false
         }
     }
     
-    //MARK:- --------------------------------------Gesture
+    // MARK: - --------------------------------------Gesture
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if otherGestureRecognizer == p?.scrollView.panGestureRecognizer {
             return true
@@ -345,17 +377,25 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
             return false
         }
     }
-    //MARK:- --------------------------------------TableDataSource&TableDelegate
+    // MARK: - --------------------------------------TableDataSource&TableDelegate
     func reloadData() {
         self.tableView.reloadData()
         self.refreshEmptyStatus()
     }
-    func numberOfSections(in tableView: UITableView) -> Int { 1 }
+    
+    /// get 属性
+    func list(for section: Int) -> [T] { currentData[section] }
+    /// get 属性
+    func model(for indexPath: IndexPath) -> T? { currentData[safe: indexPath.section]?[safe: indexPath.row] }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        currentData.count
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        list.count
+        list(for: section).count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let model = list[safe: indexPath.row],
+        guard let model = list(for: indexPath.section)[safe: indexPath.row],
               let cell = tableView.cell(for: model, indexPath: indexPath) else {
             return UITableViewCell()
         }
@@ -365,6 +405,7 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let list = list(for: indexPath.section)
         if list.count == 0, let modelType = T.self as? LayoutCachable.Type {
             // 为 skeleton做准备
             return modelType.cellHeight
@@ -392,7 +433,7 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
             delegate.tableView?(tableView, didSelectRowAt: indexPath)
             return
         }
-        if let model = list[safe: indexPath.row] {
+        if let model = model(for: indexPath) {
             selectCellInput.send(value: model)
             return
         }
@@ -411,7 +452,7 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        guard let model = list[safe: indexPath.row] else { return false }
+        guard let model = model(for: indexPath) else { return false }
         if let delegate = self.parent as? UITableViewDataSource,
            delegate.responds(to: #selector(tableView(_:canEditRowAt:))) {
             return delegate.tableView?(tableView, canEditRowAt: indexPath) ?? false
@@ -465,7 +506,7 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
         }
         return nil
     }
-    //MARK:- --------------------------------------ScrollViewDelegate
+    // MARK: - --------------------------------------ScrollViewDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if let delegate = self.parent as? UIScrollViewDelegate,
            delegate.responds(to: #selector(scrollViewDidScroll(_:))) {

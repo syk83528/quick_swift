@@ -15,6 +15,7 @@ class ExampleListController: UIViewController, TableProvider {
     var items: [ExampleItemModel] =
     [
         ExampleItemModel(name: "Test", T: TestViewController.self),
+        ExampleItemModel(name: "CollectTest", T: TestCollectPage.self),
 //        ExampleItemModel(name: "盒子模型", T: BoxViewController.self),
 //        ExampleItemModel(name: "流水布局", T: FirstBigViewController.self),
 //        ExampleItemModel(name: "导航转场动画", T: NavAnimateController.self),
