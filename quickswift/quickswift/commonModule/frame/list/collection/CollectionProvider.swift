@@ -102,12 +102,11 @@ class CollectionViewController<T: DiffableJSON>: UIViewController,
     var scrollState: ScrollState = .pending
     
     var lastContentOffset: CGPoint = .zero
-    //MARK: ------------ScrollStateful
-    //MARK:- ------------MultiScroll
+    //MARK: --------------------------------------ScrollStateful
+    //MARK: --------------------------------------MultiScroll
     private weak var p: MultiScrollViewController?
     private var checkP: Bool = false
-    //MARK: ------------MultiScroll
-    //MARK:- --------------------------------------UIProperty
+    // MARK: - --------------------------------------UIProperty
     var collectionView: CollectionView!
     
     var emptyView: UIView? = EmptyViewInstance.shared.default
@@ -135,15 +134,17 @@ class CollectionViewController<T: DiffableJSON>: UIViewController,
         configCollection()
     }
     
-    convenience init(workingRangeSize: Int = 3,
+    init(workingRangeSize: Int = 3,
                      layout: UICollectionViewLayout = ListCollectionViewLayout(stickyHeaders: false, scrollDirection: UICollectionView.ScrollDirection.vertical, topContentInset: 0, stretchToEdge: false)) {
-        self.init()
         self.workingRangeSize = workingRangeSize
         self.collectionViewLayout = layout
+        super.init(nibName: nil, bundle: nil)
+        configCollection()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.add(to: self.view)
         commonInit()
     }
     
@@ -165,8 +166,6 @@ class CollectionViewController<T: DiffableJSON>: UIViewController,
         adapt.dataSource = self
         adapt.scrollViewDelegate = self
         adapt.delegate = self
-        
-        c.add(to: self.view)
     }
     
     func commonInit() {

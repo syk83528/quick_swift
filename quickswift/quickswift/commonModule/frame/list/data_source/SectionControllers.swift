@@ -59,6 +59,8 @@ class ListSingleSectionController<Model, Cell: UICollectionViewCell>: ListSectio
         return cell
     }
     
+    func sectionlay
+    
     override func didUpdate(to object: Any) {
         model = object as? Model
     }

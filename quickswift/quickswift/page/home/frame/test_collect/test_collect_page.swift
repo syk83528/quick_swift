@@ -33,34 +33,46 @@ class TestCollectPage: BasePage, CollectionProvider {
 //        ExampleItemModel(name: "裸眼3D", T: CoreMotionViewController.self),
         
     ]
+    
+    var scrollDirection: UICollectionView.ScrollDirection {
+        .horizontal
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        collectionView.contentInsetAdjustmentBehavior = .never
         collectionViewController.moveTo(self)
-        collectionView.register(controller: ListSingleSectionController<TestCollectItemModel, TestCollectItemCell>.self, for: TestCollectItemModel.self)
-//        collectionView.sectionControllerForModel = { m in
-//            switch m {
-//            case is TestCollectItemModel:
-//                return ListSingleSectionController<TestCollectItemModel, TestCollectItemCell>()
-//
-//            default:
-//                return ListSectionController
-//            }
-//        }
-//        tableViewController.selectCell.observeValues {[weak self] model in
-//            guard self != nil else { return }
-//            (model.T as? UIViewController.Type)?.push()
-//        }
+//        collectionView.register(controller: ListSingleSectionController<TestCollectItemModel, TestCollectItemCell>.self, for: TestCollectItemModel.self)
+        collectionView.sectionControllerForModel = { m in
+            switch m {
+            case is TestCollectItemModel:
+                let c = ListSingleSectionController<TestCollectItemModel, TestCollectItemCell>()
+                c.inset = .init(top: 10, left: 10, bottom: 10, right: 10)
+                return c
+            default:
+                return ListSectionController()
+            }
+        }
+        collectionViewController.selectCell.observeValues {[weak self] model in
+            guard self != nil else { return }
+            (model.T as? UIViewController.Type)?.push()
+        }
         list = items
         forceReloadData()
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        collectionView.pin.all()
     }
 }
 
 class TestCollectItemModel: DataModel, LayoutCachable {
     
     var cellSize: CGSize {
-        MakeSize(150, 150)
+        MakeSize(50, 50)
     }
 
     var name: String

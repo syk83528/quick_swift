@@ -7,6 +7,7 @@
 
 import Foundation
 import IGListKit
+import IGListDiffKit
 import common
 
 class CollectionView: UICollectionView, UIGestureRecognizerDelegate {

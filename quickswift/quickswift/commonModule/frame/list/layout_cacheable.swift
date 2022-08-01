@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import HandyJSON
-import IGListDiffKit
+import IGListKit
 
 public typealias DiffableJSON = HandyJSON & ListDiffable
 
@@ -24,4 +24,8 @@ extension LayoutCachable {
     static var cellSize: CGSize { .zero }
     var cellHeight: CGFloat { Self.cellHeight }
     var cellSize: CGSize { Self.cellSize }
+}
+
+protocol CellTypeReturnable {
+    var cellType:  (UICollectionViewCell & ListBindable).Type { get }
 }
