@@ -8,6 +8,10 @@
 import Foundation
 import IGListKit
 
+protocol AnySelectable {
+    var didSelectModel: ((Any) -> Void)? { get set }
+}
+
 class ListSingleSectionController<Model, Cell: UICollectionViewCell>: ListSectionController {
     override init() {
         super.init()
@@ -58,8 +62,6 @@ class ListSingleSectionController<Model, Cell: UICollectionViewCell>: ListSectio
         }
         return cell
     }
-    
-    func sectionlay
     
     override func didUpdate(to object: Any) {
         model = object as? Model

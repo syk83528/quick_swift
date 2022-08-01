@@ -7,6 +7,8 @@
 
 import Foundation
 import IGListKit
+import FlexLayout
+import PinLayout
 import common
 
 class TestCollectPage: BasePage, CollectionProvider {
@@ -35,7 +37,7 @@ class TestCollectPage: BasePage, CollectionProvider {
     ]
     
     var scrollDirection: UICollectionView.ScrollDirection {
-        .horizontal
+        .vertical
     }
     
     override func viewDidLoad() {
@@ -46,9 +48,10 @@ class TestCollectPage: BasePage, CollectionProvider {
         collectionView.sectionControllerForModel = { m in
             switch m {
             case is TestCollectItemModel:
-                let c = ListSingleSectionController<TestCollectItemModel, TestCollectItemCell>()
-                c.inset = .init(top: 10, left: 10, bottom: 10, right: 10)
-                return c
+//                let c = TestCollectSectionController()
+//                c.inset = .init(top: 10, left: 10, bottom: 10, right: 10)
+//                return c
+                return TestCollectSectionController()
             default:
                 return ListSectionController()
             }
@@ -69,10 +72,14 @@ class TestCollectPage: BasePage, CollectionProvider {
     }
 }
 
+class TestCollectSectionController: ListSingleSectionController<TestCollectItemModel, TestCollectItemCell>  {
+    
+}
+
 class TestCollectItemModel: DataModel, LayoutCachable {
     
     var cellSize: CGSize {
-        MakeSize(50, 50)
+        MakeSize(150, 150)
     }
 
     var name: String
