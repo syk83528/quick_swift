@@ -10,7 +10,7 @@ import Foundation
 import ReactiveSwift
 import ReactiveCocoa
 
-class Get {
+public class Get {
     static let to = Get()
     private init() {}
     
@@ -20,7 +20,7 @@ class Get {
     
 //    private let futureControllerSignal = Signal<Any, Never>.pipe()
     
-    static func put(_ c: GetController, identify: String? = nil, operation: GetOperation = .ignore) {
+    public static func put(_ c: GetController, identify: String? = nil, operation: GetOperation = .ignore) {
         let key = (c.className + (identify ?? "")).nsString
         if let _ = to.controllerMap.object(forKey: key) {
             switch operation {
@@ -37,7 +37,7 @@ class Get {
     }
     
     
-    static func find<T: GetController>(_ type: T.Type, identify: String? = nil) -> T? {
+    public static func find<T: GetController>(_ type: T.Type, identify: String? = nil) -> T? {
         let key = (type.className + (identify ?? "")).nsString
         return to.controllerMap.object(forKey: key) as? T
     }

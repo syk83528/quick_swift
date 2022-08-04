@@ -42,6 +42,7 @@ class TestCollectPage: BasePage, CollectionProvider {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "测试IGListKit"
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionViewController.moveTo(self)
 //        collectionView.register(controller: ListSingleSectionController<TestCollectItemModel, TestCollectItemCell>.self, for: TestCollectItemModel.self)

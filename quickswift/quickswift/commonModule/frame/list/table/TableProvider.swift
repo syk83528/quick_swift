@@ -71,20 +71,25 @@ extension TableProvider {
     /// 单列表用这个
     var list:[DataType] {
         get {
-            tableViewController.list(for: 0)
+            if tableViewController.currentData.count > 0 {
+                return tableViewController.currentData[0]
+            } else {
+                tableViewController.currentData = [[]]
+                return tableViewController.currentData[0]
+            }
         }
         set {
-            tableViewController.data = [newValue]
+            tableViewController.currentData = [newValue]
         }
     }
     
     /// 分组用这个
     var section: [[DataType]] {
         get {
-            tableViewController.data
+            tableViewController.currentData
         }
         set {
-            tableViewController.data = newValue
+            tableViewController.currentData = newValue
         }
     }
 }
@@ -106,15 +111,22 @@ class TableViewController<T: DiffableJSON>: UIViewController, ScrollStateful, UI
     var lastContentOffset: CGPoint = .zero
     var scrollState: ScrollState = .pending
     // MARK: - --------------------------------------Data
-    var data: [[T]] = []
+    var data: [[T]] = [[]]
     /// 搜索的数据
-    var searchData: [[T]] = []
+    var searchData: [[T]] = [[]]
     /// 是否在搜索中
     var isInSearch: Bool = false
     /// 真正的数据
     var currentData: [[T]] {
         get {
             isInSearch ? searchData : data
+        }
+        set {
+            if isInSearch {
+                searchData = newValue
+            } else {
+                data = newValue
+            }
         }
     }
     

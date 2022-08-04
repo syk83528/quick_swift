@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+import common
 
 class BasePage: UIViewController {
     init() {
@@ -44,3 +46,29 @@ class BasePage: UIViewController {
         llog("💀💀💀___\(Self.self)")
     }
 }
+
+protocol BaseGetPageProtocol {
+    associatedtype T: GetController
+    var c: T! { get }
+}
+
+typealias BaseGetPage = BasePage & BaseGetPageProtocol
+
+
+//class test_aaaa_page: BaseGetPage {
+//
+//    var c: TestRunloopGetController! = TestRunloopGetController()
+//}
+//
+//
+//class test_bbbb_page: BaseGetPage {
+//
+//    typealias T = TestRunloopGetController
+//
+//    var c: TestRunloopGetController!
+//
+//    override func commonInit() {
+//        super.commonInit()
+//        c = TestRunloopGetController()
+//    }
+//}

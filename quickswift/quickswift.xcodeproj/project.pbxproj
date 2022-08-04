@@ -144,6 +144,12 @@
 		3FB7B0D128927BE3005E67EA /* test_collect_page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB7B0D028927BE3005E67EA /* test_collect_page.swift */; };
 		3FB7B0D42893748C005E67EA /* BindingSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB7B0D32893748C005E67EA /* BindingSectionController.swift */; };
 		3FB7B0D628937578005E67EA /* list_collection_context+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB7B0D528937578005E67EA /* list_collection_context+.swift */; };
+		3FE26B572897C583007A9FA3 /* test_runloop_page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE26B562897C583007A9FA3 /* test_runloop_page.swift */; };
+		3FE26B5A2897CC96007A9FA3 /* test_runloop_model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE26B592897CC96007A9FA3 /* test_runloop_model.swift */; };
+		3FE26B5C2897CD0A007A9FA3 /* test_runloop_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE26B5B2897CD0A007A9FA3 /* test_runloop_cell.swift */; };
+		3FE26B602898B9B8007A9FA3 /* test_runloop_controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE26B5F2898B9B8007A9FA3 /* test_runloop_controller.swift */; };
+		3FE26B62289B7110007A9FA3 /* runloop_observer_util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE26B5D2898B456007A9FA3 /* runloop_observer_util.swift */; };
+		3FE26B65289B97D3007A9FA3 /* scrollview+scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE26B64289B97D3007A9FA3 /* scrollview+scroll.swift */; };
 		47AAC77F9A1395D28D12FA4B /* Pods_common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15F36C11B9350268F77894CD /* Pods_common.framework */; };
 		FDC2B5CC74AA108E2407D210 /* Pods_quickswift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB85948079A417D011953D44 /* Pods_quickswift.framework */; };
 /* End PBXBuildFile section */
@@ -315,6 +321,12 @@
 		3FB7B0D028927BE3005E67EA /* test_collect_page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_collect_page.swift; sourceTree = "<group>"; };
 		3FB7B0D32893748C005E67EA /* BindingSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindingSectionController.swift; sourceTree = "<group>"; };
 		3FB7B0D528937578005E67EA /* list_collection_context+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "list_collection_context+.swift"; sourceTree = "<group>"; };
+		3FE26B562897C583007A9FA3 /* test_runloop_page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_runloop_page.swift; sourceTree = "<group>"; };
+		3FE26B592897CC96007A9FA3 /* test_runloop_model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_runloop_model.swift; sourceTree = "<group>"; };
+		3FE26B5B2897CD0A007A9FA3 /* test_runloop_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_runloop_cell.swift; sourceTree = "<group>"; };
+		3FE26B5D2898B456007A9FA3 /* runloop_observer_util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = runloop_observer_util.swift; sourceTree = "<group>"; };
+		3FE26B5F2898B9B8007A9FA3 /* test_runloop_controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_runloop_controller.swift; sourceTree = "<group>"; };
+		3FE26B64289B97D3007A9FA3 /* scrollview+scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "scrollview+scroll.swift"; sourceTree = "<group>"; };
 		5AC23D32792DB8CAD1F42BCD /* Pods-common.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-common.debug.xcconfig"; path = "Target Support Files/Pods-common/Pods-common.debug.xcconfig"; sourceTree = "<group>"; };
 		69112E47FD6DF109463B49F3 /* Pods-quickswift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickswift.debug.xcconfig"; path = "Target Support Files/Pods-quickswift/Pods-quickswift.debug.xcconfig"; sourceTree = "<group>"; };
 		9E7FD0913D0636F9E6690681 /* Pods-quickswift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickswift.release.xcconfig"; path = "Target Support Files/Pods-quickswift/Pods-quickswift.release.xcconfig"; sourceTree = "<group>"; };
@@ -504,6 +516,7 @@
 				3FB7B03128913608005E67EA /* ui_operation */,
 				3FB7B02B28912FCA005E67EA /* kvstore */,
 				3FB7AF8628910E90005E67EA /* operation */,
+				3FE26B5D2898B456007A9FA3 /* runloop_observer_util.swift */,
 				3F552A68288FEAB900F5AE4D /* logger.swift */,
 				3FB7AEF7288FEF38005E67EA /* quick.swift */,
 				3FB7AF6B2890E984005E67EA /* queue+.swift */,
@@ -971,6 +984,7 @@
 		3FB7B06528922DE1005E67EA /* extension */ = {
 			isa = PBXGroup;
 			children = (
+				3FE26B63289B97B5007A9FA3 /* scrollview */,
 				3FB7B06928922E03005E67EA /* view_controller */,
 				3FB7B06628922DEC005E67EA /* action_sheet */,
 			);
@@ -1099,6 +1113,7 @@
 		3FB7B0BB28926ED8005E67EA /* frame */ = {
 			isa = PBXGroup;
 			children = (
+				3FE26B552897C570007A9FA3 /* test_runloop */,
 				3FB7B0D228927C00005E67EA /* test_area */,
 				3FB7B0CF28927BB5005E67EA /* test_collect */,
 			);
@@ -1139,6 +1154,33 @@
 				3FB7B0BC28926EF2005E67EA /* TestViewController.swift */,
 			);
 			path = test_area;
+			sourceTree = "<group>";
+		};
+		3FE26B552897C570007A9FA3 /* test_runloop */ = {
+			isa = PBXGroup;
+			children = (
+				3FE26B582897CC88007A9FA3 /* model */,
+				3FE26B562897C583007A9FA3 /* test_runloop_page.swift */,
+				3FE26B5F2898B9B8007A9FA3 /* test_runloop_controller.swift */,
+			);
+			path = test_runloop;
+			sourceTree = "<group>";
+		};
+		3FE26B582897CC88007A9FA3 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				3FE26B592897CC96007A9FA3 /* test_runloop_model.swift */,
+				3FE26B5B2897CD0A007A9FA3 /* test_runloop_cell.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		3FE26B63289B97B5007A9FA3 /* scrollview */ = {
+			isa = PBXGroup;
+			children = (
+				3FE26B64289B97D3007A9FA3 /* scrollview+scroll.swift */,
+			);
+			path = scrollview;
 			sourceTree = "<group>";
 		};
 		8939BBF538C7407CAAA57621 /* Pods */ = {
@@ -1337,6 +1379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FB7AF99289111AC005E67EA /* color.swift in Sources */,
+				3FE26B602898B9B8007A9FA3 /* test_runloop_controller.swift in Sources */,
 				3FB7B07B28923BCA005E67EA /* TableProvider.swift in Sources */,
 				3FB7B07F28923CD5005E67EA /* IWReusable.swift in Sources */,
 				3FB7B01D289125E9005E67EA /* UserManager+LogInOut.swift in Sources */,
@@ -1369,9 +1412,11 @@
 				3FB7B03F28913956005E67EA /* random_value.swift in Sources */,
 				3F552A25288F7DB600F5AE4D /* ViewController.swift in Sources */,
 				3FB7AF562890E50C005E67EA /* APIError.swift in Sources */,
+				3FE26B5C2897CD0A007A9FA3 /* test_runloop_cell.swift in Sources */,
 				3FB7AF592890E50C005E67EA /* APIPlugins.swift in Sources */,
 				3FB7B08D28923DE2005E67EA /* MultiScroll.swift in Sources */,
 				3FB7B07A28923BCA005E67EA /* TableViewCell.swift in Sources */,
+				3FE26B572897C583007A9FA3 /* test_runloop_page.swift in Sources */,
 				3FB7B02928912D3F005E67EA /* ActionSheet.swift in Sources */,
 				3FB7B07C28923BCA005E67EA /* TableView.swift in Sources */,
 				3FB7AF5C2890E50C005E67EA /* APIService.swift in Sources */,
@@ -1385,6 +1430,7 @@
 				3FB7AF572890E50C005E67EA /* BaseApi.swift in Sources */,
 				3FB7B054289225AB005E67EA /* HomeVC.swift in Sources */,
 				3FB7B09628923F4F005E67EA /* GradientButton.swift in Sources */,
+				3FE26B5A2897CC96007A9FA3 /* test_runloop_model.swift in Sources */,
 				3FB7B06128922D46005E67EA /* DebugSheet.swift in Sources */,
 				3F552A23288F7DB600F5AE4D /* SceneDelegate.swift in Sources */,
 				3FB7B0CA2892715B005E67EA /* Intentable.swift in Sources */,
@@ -1406,6 +1452,7 @@
 				3FB7B0482891441D005E67EA /* AppDelegate+.swift in Sources */,
 				3FB7AF772890EB13005E67EA /* Env.swift in Sources */,
 				3FB7B07728923BCA005E67EA /* CollectionView.swift in Sources */,
+				3FE26B65289B97D3007A9FA3 /* scrollview+scroll.swift in Sources */,
 				3FB7AF8028910D6E005E67EA /* ActivityIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1443,6 +1490,7 @@
 				3FB7B0CC2892724A005E67EA /* array+flex.swift in Sources */,
 				3FB7AF8528910E11005E67EA /* operation.swift in Sources */,
 				3FB7AF6F2890E9CE005E67EA /* DispatchQueue+.swift in Sources */,
+				3FE26B62289B7110007A9FA3 /* runloop_observer_util.swift in Sources */,
 				3FB7AFA128911296005E67EA /* View+Drag.swift in Sources */,
 				3FB7AF642890E673005E67EA /* error+.swift in Sources */,
 				3FB7B04228913996005E67EA /* HandyJSON+.swift in Sources */,
